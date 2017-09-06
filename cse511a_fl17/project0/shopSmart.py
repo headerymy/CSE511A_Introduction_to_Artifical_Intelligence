@@ -23,7 +23,7 @@ def shopSmart(orderList, fruitShops):
         fruitShops: List of FruitShops
     """    
     "*** YOUR CODE HERE ***"
-    # This is where my code starts
+    "Try again"
     minimum_cost = 0
     for shop in fruitShops:
         cost = shop.getPriceOfOrder(orderList)
