@@ -176,9 +176,9 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         discovered_node.add(vertex)
         for successors in problem.getSuccessors(vertex):
             if successors[0] not in discovered_node:
-                g_n = problem.getCostOfActions(tmp_path) + heuristic(vertex, problem)
                 result = list(tmp_path)
                 result.append(successors[1])
+                g_n = problem.getCostOfActions(result) + heuristic(vertex, problem)
                 priority_queue.push((successors[0], result), g_n)
     return result
 
