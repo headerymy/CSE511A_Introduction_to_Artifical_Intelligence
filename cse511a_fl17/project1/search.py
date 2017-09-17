@@ -84,7 +84,23 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    stack = util.Stack()
+    discovered_node = set()
+    result = []
+
+    stack.push((problem.getStartState(), []))
+
+    while not stack.isEmpty():
+        (vertex, tmp_path) = stack.pop()
+        if problem.isGoalState(vertex):
+            return tmp_path
+        if vertex not in discovered_node:
+            discovered_node.add(vertex)
+            for successors in problem.getSuccessors(vertex):
+                result = list(tmp_path)
+                result.append(successors[1])
+                stack.push((successors[0], result))
+    return result
 
 def breadthFirstSearch(problem):
     """
@@ -92,7 +108,25 @@ def breadthFirstSearch(problem):
     [2nd Edition: p 73, 3rd Edition: p 82]
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    queue = util.Queue()
+    discovered_node = set()
+    result = []
+
+    queue.push((problem.getStartState(), []))
+    if problem.isGoalState(problem.getStartState()):
+        return []
+
+    while not queue.isEmpty():
+        (vertex, tmp_path) = queue.pop()
+        if vertex not in discovered_node:
+            discovered_node.add(vertex)
+            for successors in problem.getSuccessors(vertex):
+                result = list(tmp_path)
+                if problem.isGoalState(vertex):
+                    return tmp_path
+                result.append(successors[1])
+                queue.push((successors[0], result))
+    return result
 
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
