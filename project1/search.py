@@ -163,8 +163,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     priority_queue = util.PriorityQueue()
     discovered_node = set()
     result = []
+    g_n = 0
+    h_n = heuristic(problem.getStartState(), problem)
+    f_n = g_n + h_n
 
-    priority_queue.push((problem.getStartState(), []), 0)
+    priority_queue.push((problem.getStartState(), []), f_n)
 
     while not priority_queue.isEmpty():
         (vertex, tmp_path) = priority_queue.pop()
@@ -173,10 +176,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         discovered_node.add(vertex)
         for successors in problem.getSuccessors(vertex):
             if successors[0] not in discovered_node:
-                priority = problem.getCostOfActions(tmp_path) + heuristic(vertex, problem)
+                f_n = problem.getCostOfActions(tmp_path) + heuristic(vertex, problem)
                 result = list(tmp_path)
                 result.append(successors[1])
-                priority_queue.push((successors[0], result),priority)
+                priority_queue.push((successors[0], result), f_n)
     return result
 
 # Abbreviations
