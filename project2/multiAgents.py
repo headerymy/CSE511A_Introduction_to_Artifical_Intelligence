@@ -68,8 +68,9 @@ class ReflexAgent(Agent):
     newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
     "*** YOUR CODE HERE ***"
+    list = []
     for food in newFood.asList():
-        foodDists = [].append(manhattanDistance(newPos, food))
+        foodDists = list.append(manhattanDistance(newPos, food))
 
     if len(foodDists) > 0:
         closestFoodDist = min(foodDists)
@@ -136,7 +137,9 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns the total number of agents in the game
     """
     "*** YOUR CODE HERE ***"
-
+    toReturn = max([(action, self.minimax(gameState.generateSuccessor(0, action), self.depth, 1))
+    for action in gameState.getLegalActions(0) if action != Directions.STOP], key=lambda x: x[1])
+    return toReturn[0]
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
