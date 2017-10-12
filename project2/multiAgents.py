@@ -134,7 +134,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
     return best_action
 
   def maxvalue(self, gameState, depth, action):
-    if depth == 0:
+    if depth == 0 or gameState.isWin() or gameState.isLose():
         return self.evaluationFunction(gameState), action
     depth -= 1
     value = float("inf")
@@ -152,7 +152,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
     return value, best_action
 
   def minvalue(self, gameState, depth, action):
-    if depth == 0:
+    if depth == 0 or gameState.isWin() or gameState.isLose():
         return self.evaluationFunction(gameState), action
     value = float("inf")
     best_action = Directions.STOP
