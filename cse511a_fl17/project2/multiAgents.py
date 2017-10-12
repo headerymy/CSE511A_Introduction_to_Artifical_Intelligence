@@ -75,9 +75,8 @@ class ReflexAgent(Agent):
         closestFoodDist = min(foodDists)
     else: 1
 
-    for ghostPos in successorGameState.getGhostPositions():
-        ghostDists = (manhattanDistance(newPos, ghostPos))
-        ghostStatePenalty = 1000*(newScaredTimes == [0]*len(newGhostStates)) * (ghostDists < 2)
+    ghostStatePenalty = 1000*(newScaredTimes == [0]*len(newGhostStates))* \
+    any(manhattanDistance(newPos,ghostPos) < 2 for ghostPos in successorGameState.getGhostPositions())
     return (10000./(len(newFood.asList()) + 1) + 1./closestFoodDist - ghostStatePenalty)
 
 def scoreEvaluationFunction(currentGameState):
