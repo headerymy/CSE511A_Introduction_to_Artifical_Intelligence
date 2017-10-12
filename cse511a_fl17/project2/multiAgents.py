@@ -69,14 +69,15 @@ class ReflexAgent(Agent):
 
     "*** YOUR CODE HERE ***"
     for food in newFood.asList():
-        foodDists = [manhattanDistance(newPos, food)]
+        foodDists = [].append(manhattanDistance(newPos, food))
 
     if len(foodDists) > 0:
         closestFoodDist = min(foodDists)
     else: 1
 
-    ghostStatePenalty = 1000*(newScaredTimes == [0]*len(newGhostStates))* \
-    any(manhattanDistance(newPos,ghostPos) < 2 for ghostPos in successorGameState.getGhostPositions())
+    for ghostPos in successorGameState.getGhostPositions():
+        GhostDist = manhattanDistance(newPos,ghostPos)
+        ghostStatePenalty = 1000*(newScaredTimes == [0]*len(newGhostStates))*(GhostDist < 2)
     return (10000./(len(newFood.asList()) + 1) + 1./closestFoodDist - ghostStatePenalty)
 
 def scoreEvaluationFunction(currentGameState):
@@ -135,7 +136,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns the total number of agents in the game
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
   """
