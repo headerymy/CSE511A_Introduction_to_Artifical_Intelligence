@@ -187,7 +187,55 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
           Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        value, best_action, alpha, beta = self.maxvalue(gameState, float('-inf'), float('inf')self.depth, Directions.STOP)
+        return best_action
+
+    def maxvalue(self, gameState, alpha,beta, depth, action):
+        if depth == 0 or gameState.isWin() or gameState.isLose():
+            return self.evaluationFunction(gameState), action
+        depth -= 1
+        value = float('-inf')
+        best_action = Directions.STOP
+
+        actions = gameState.getLegalActions(0)
+        if 'Stop' in actions:
+            actions.remove('Stop')
+        for action in actions:
+            child_state = gameState.generateSuccessor(0, action)
+            min_value, direction,alpha,beta = self.minvalue(child_state,alpha,beta, depth, action)
+            if min_value > value:
+                value = min_value
+                best_action = action
+            if value > beta:
+              break
+            alpha = max(alpha, value)
+
+        return value, best_action
+
+    def minvalue(self, gameState,alpha,beta,depth, action):
+        depth -= 1
+        if depth == 0 or gameState.isLose() or gameState.isWin():
+            return self.evaluationFunction(gameState), action
+
+        value = float('inf')
+        best_action = Directions.STOP
+
+        for agent in range(1, gameState.getNumAgents()):
+            actions = gameState.getLegalActions(agent)
+            if 'Stop' in actions:
+                actions.remove('Stop')
+            for action in actions:
+                child_state = gameState.generateSuccessor(agent, action)
+                max_value, direction,alpha,beta = self.maxvalue(child_state, alpha,beta, depth, action)
+                if max_value < value:
+                    value = max_value
+                    best_action = action
+                if value < alpha:
+                  break
+                beta = min(beta,value)
+                
+
+        return value, best_action
 
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
@@ -231,7 +279,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
         value = 0
         best_action = Directions.STOP
-        
+
         for agent in range(1, gameState.getNumAgents()):
             actions = gameState.getLegalActions(agent)
             if 'Stop' in actions:
