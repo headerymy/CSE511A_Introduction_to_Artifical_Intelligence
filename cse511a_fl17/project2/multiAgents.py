@@ -94,7 +94,7 @@ class ReflexAgent(Agent):
 
     numberOfCapsulesLeft = len(currentGameState.getCapsules())
 
-    score = 1 * score \
+    score = 1 * scoreEvaluationFunction(currentGameState) \
             -1.5 * closestFoodDist \
             -2 * (1./closestFoodDist) + \
             -2 * closestScaredGhostDist + \
