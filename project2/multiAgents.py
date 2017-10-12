@@ -233,7 +233,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                 if value < alpha:
                   break
                 beta = min(beta,value)
-                
+
 
         return value, best_action
 
