@@ -35,9 +35,22 @@ class ValueIterationAgent(ValueEstimationAgent):
     self.discount = discount
     self.iterations = iterations
     self.values = util.Counter() # A Counter is a dict with default 0
-     
+    self.q_values = util.Counter()
     "*** YOUR CODE HERE ***"
-    
+    states = mdp.getStates()
+    for iter in range(self.iterations):
+        Value = self.values.copy()
+        for state in states:
+            possible_actions = mdp.getPossibleActions(state)
+            qvalue = []
+            for possible_action in possible_actions:
+                qvalue.append(self.getQValue(state, possible_action))
+            if len(qvalue) == 0:
+                Value[state] = 0
+            else:
+                Value[state] = max(qvalue)
+        self.values = Value
+
   def getValue(self, state):
     """
       Return the value of the state (computed in __init__).
@@ -54,7 +67,12 @@ class ValueIterationAgent(ValueEstimationAgent):
       to derive it on the fly.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    q_value = 0
+    nextStates = self.mdp.getTransitionStatesAndProbs(state, action)
+    for nextState, probability in nextStates:
+        q_value += probability * (self.mdp.getReward(state, action, nextState) + self.discount * self.getValue(nextState))
+    self.q_values[state, action] = q_value
+    return q_value
 
   def getPolicy(self, state):
     """
@@ -65,9 +83,19 @@ class ValueIterationAgent(ValueEstimationAgent):
       terminal state, you should return None.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    actions = self.mdp.getPossibleActions(state)
+    max_q_value = float("-inf")
+    optimal_action = None
+
+    if len(actions) == 0:
+        return None
+
+    for action in actions:
+        if self.getQValue(state, action) > max_q_value:
+            max_q_value = self.getQValue(state, action)
+            optimal_action = action
+    return optimal_action
 
   def getAction(self, state):
     "Returns the policy at the state (no exploration)."
     return self.getPolicy(state)
-  
