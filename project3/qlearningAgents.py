@@ -92,13 +92,14 @@ class QLearningAgent(ReinforcementAgent):
     "*** YOUR CODE HERE ***"
     if len(legalActions) == 0:
         return None
-    if util.flipCoin(self.epsilon):
+    elif util.flipCoin(self.epsilon):
         return random.choice(legalActions)
-    q = util.Counter()
-    for legal_action in legalActions:
-        q[state, legal_action] = self.getQValue(state, legal_action)
-    action = q.argMax()[1]
-    return action
+    else:
+        q = util.Counter()
+        for legal_action in legalActions:
+            q[state, legal_action] = self.getQValue(state, legal_action)
+        action = q.argMax()[1]
+        return action
 
   def update(self, state, action, nextState, reward):
     """
@@ -110,7 +111,7 @@ class QLearningAgent(ReinforcementAgent):
       it will be called on your behalf
     """
     "*** YOUR CODE HERE ***"
-    self.qvalues[state, action] = (1 - self.alpha) * self.getQValue(state, action)\
+    self.q_values[state, action] = (1 - self.alpha) * self.getQValue(state, action)\
                     + self.alpha * (reward + self.discount * self.getValue(nextState))
 
 class PacmanQAgent(QLearningAgent):
